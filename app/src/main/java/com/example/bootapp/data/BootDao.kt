@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.bootapp.domain.BootModel
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -22,7 +21,7 @@ interface BootDao {
     suspend fun insert(boot: BootEntity)
 
     //todo to const
-    @Query("SELECT strftime('%Y-%m-%d', datetime(${BootEntity.TIMESTAMP_ID} / 1000, 'unixepoch')) AS day, COUNT(*) AS bootCount FROM ${BootEntity.TABLE_NAME} GROUP BY day ORDER BY day DESC")
+    @Query(QUERY_GET_DAILY_BOOT_COUNT)
     fun getBootsGroupedByDay(): Flow<List<BootDayGroup>>
 
     companion object {
@@ -33,5 +32,13 @@ interface BootDao {
         internal const val QUERY_GET_LAST_TWO = """
         SELECT * FROM ${BootEntity.TABLE_NAME} ORDER BY ${BootEntity.TIMESTAMP_ID} DESC LIMIT 2 
         """
+
+        internal const val QUERY_GET_DAILY_BOOT_COUNT = """
+    SELECT strftime('%Y-%m-%d', datetime(${BootEntity.TIMESTAMP_ID} / 1000, 'unixepoch')) AS day, 
+           COUNT(*) AS bootCount 
+    FROM ${BootEntity.TABLE_NAME} 
+    GROUP BY day 
+    ORDER BY day DESC
+    """
     }
 }

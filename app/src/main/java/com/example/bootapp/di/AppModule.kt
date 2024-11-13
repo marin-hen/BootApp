@@ -18,7 +18,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-//todo split to separate modules
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
@@ -48,7 +47,6 @@ internal abstract class DataModule {
         bootRepositoryImpl: BootRepositoryImpl
     ): BootRepository
 }
-
 
 @Module
 @InstallIn(SingletonComponent::class)
